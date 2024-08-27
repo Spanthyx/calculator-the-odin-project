@@ -1,15 +1,18 @@
-// Setup
-
-setUpNumberButtons();
-
-
 // Variables
 
 let firstNum;
 let operator;
 let secondNum;
 
-let displayValue = ``;
+let displayValue;
+let display = document.querySelector("#display");
+
+
+// Setup
+
+resetAll();
+setUpNumberButtons();
+setUpClear();
 
 
 
@@ -34,16 +37,16 @@ function divide(a, b) {
 function operate(firstNum, secondNum, operator) {
     let result;
     switch(operator) {
-        case "add":
+        case "+":
             result = add(firstNum, secondNum);
             break;
-        case "subtract":
+        case "-":
             result = subtract(firstNum, secondNum);
             break;
-        case "multiply":
+        case "x":
             result = multiply(firstNum, secondNum);
             break;
-        case "divide":
+        case "/":
             result = multiply(firstNum, secondNum);
             break;
         default:
@@ -51,15 +54,36 @@ function operate(firstNum, secondNum, operator) {
     }
 }
 
-
 function setUpNumberButtons() {
     for (let i = 0; i <= 9; i++) {
         document.querySelector(`#btn-${i}`)
                 .addEventListener("click", () => {
-                    displayValue += `${i}`;
-                    document.querySelector("#display")
-                            .textContent = displayValue;
+                    if (displayValue === "0") {
+                        displayValue = `${i}`;
+                    } else {
+                        displayValue += `${i}`;
+                    }
+                    updateDisplay();
                 });
     }
+}
+
+function resetAll() {
+    firstNum = "";
+    secondNum = "";
+    operator = "";
+    displayValue = "0";
+    updateDisplay();
+}
+
+function updateDisplay() {
+    display.textContent = displayValue;
+}
+
+function setUpClear() {
+    document.querySelector("#c")
+            .addEventListener("click", () => {
+                resetAll();
+            });
 }
 
