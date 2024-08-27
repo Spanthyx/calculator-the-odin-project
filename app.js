@@ -1,3 +1,20 @@
+// Setup
+
+setUpNumberButtons();
+
+
+// Variables
+
+let firstNum;
+let operator;
+let secondNum;
+
+let displayValue = ``;
+
+
+
+// Functions
+
 function add(a, b) {
     return a + b;
 }
@@ -13,10 +30,6 @@ function multiply(a, b) {
 function divide(a, b) {
     return a / b;
 }
-
-let firstNum;
-let operator;
-let secondNum;
 
 function operate(firstNum, secondNum, operator) {
     let result;
@@ -37,3 +50,16 @@ function operate(firstNum, secondNum, operator) {
             result = null;
     }
 }
+
+
+function setUpNumberButtons() {
+    for (let i = 0; i <= 9; i++) {
+        document.querySelector(`#btn-${i}`)
+                .addEventListener("click", () => {
+                    displayValue += `${i}`;
+                    document.querySelector("#display")
+                            .textContent = displayValue;
+                });
+    }
+}
+
