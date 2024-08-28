@@ -10,6 +10,8 @@ let displayValue;
 let display = document.querySelector("#display");
 let displayingResult;
 
+let operatorButtonsList = Array.from(document.querySelectorAll(".btn-operator"));
+
 
 // Setup
 
@@ -75,6 +77,7 @@ function resetAll() {
     displayingResult = false;
     waitingForSecondNum = false;
     updateDisplay();
+    setUpOperatorButtons();
 }
 
 function updateDisplay() {
@@ -85,36 +88,83 @@ function setUpNumberButtons() {
     for (let i = 0; i <= 9; i++) {
         document.querySelector(`#btn-${i}`)
                 .addEventListener("click", (i) => numberButtonClicked(i));
+        document.querySelector(`#btn-${i}`)
+                .addEventListener("mousedown", e => {
+                    e.target.style.opacity = 0.5; 
+                });
+        document.querySelector(`#btn-${i}`)
+                .addEventListener("mouseup", e => {
+                    e.target.style.opacity = 1; 
+                });
+        document.querySelector(`#btn-${i}`)
+                .addEventListener("mouseleave", e => {
+                    e.target.style.opacity = 1; 
+                });
     }
 }
 
 function setUpClear() {
     document.querySelector("#c")
             .addEventListener("click", () => resetAll());
+    document.querySelector(`#c`)
+            .addEventListener("mousedown", e => {
+                e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
+            });
+    document.querySelector(`#c`)
+            .addEventListener("mouseup", e => {
+                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
+            });
+    document.querySelector(`#c`)
+            .addEventListener("mouseleave", e => {
+                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
+            });
 }
 
 function setUpOperatorButtons() {
-    document.querySelector("#btn-divide")
-            .addEventListener("click", e => operatorButtonClicked(e));
-    document.querySelector("#btn-multiply")
-            .addEventListener("click", e => operatorButtonClicked(e));
-    document.querySelector("#btn-subtract")
-            .addEventListener("click", e => operatorButtonClicked(e));
-    document.querySelector("#btn-add")
-            .addEventListener("click", e => operatorButtonClicked(e));
+    operatorButtonsList.forEach((btn) => {
+        btn.style.backgroundColor = `rgb(0, 255, 255)`;
+        btn.addEventListener("click", e => operatorButtonClicked(e));
+        btn.addEventListener("mousedown", e => {
+            e.target.style.backgroundColor = `rgb(255, 115, 0)`; 
+        });
+    })
 }
 
 function setUpEvalButton() {
-    document.querySelector("#btn-eval").addEventListener("click", () => evaluate());
+    document.querySelector(`#btn-eval`).addEventListener("click", () => evaluate());
+    document.querySelector(`#btn-eval`)
+            .addEventListener("mousedown", e => {
+                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
+            });
+    document.querySelector(`#btn-eval`)
+            .addEventListener("mouseup", e => {
+                e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
+            });
+    document.querySelector(`#btn-eval`)
+            .addEventListener("mouseleave", e => {
+                e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
+            });
 }
 
 function setUpDecimalButton() {
     document.querySelector("#btn-decimal").addEventListener("click", () => handleDecimal());
+    document.querySelector(`#btn-decimal`)
+            .addEventListener("mousedown", e => {
+                e.target.style.opacity = 0.5; 
+            });
+    document.querySelector(`#btn-decimal`)
+            .addEventListener("mouseup", e => {
+                e.target.style.opacity = 1; 
+            });
+    document.querySelector(`#btn-decimal`)
+            .addEventListener("mouseleave", e => {
+                e.target.style.opacity = 1; 
+            });
 }
-
 
 function evaluate() {
     if (firstNum !== "" && operator !== "") {
+        setUpOperatorButtons();
         secondNum = Number(displayValue);
         displayValue = operate(firstNum, secondNum, operator);
         updateDisplay();
@@ -130,7 +180,7 @@ function numberButtonClicked(e) {
         displayingResult = false;
         waitingForSecondNum = false;
         displayValue = `${num}`;
-    } else {
+    } else if (displayValue.length < 7) {
         displayValue += `${num}`;
     }
     updateDisplay();
@@ -141,6 +191,13 @@ function operatorButtonClicked(event) {
     if (firstNum !== "" && operator !== "" && !waitingForSecondNum) {
         evaluate();
     }
+    operatorButtonsList.forEach((btn) => {
+        if (btn.textContent === newOperator) {
+            btn.style.backgroundColor = `rgb(255, 115, 0)`;
+        } else {
+            btn.style.backgroundColor = `rgb(0, 255, 255)`; 
+        }
+    })
     operator = newOperator;
     firstNum = Number(displayValue);
     waitingForSecondNum = true;
@@ -152,7 +209,7 @@ function handleDecimal() {
             displayingResult = false;
             waitingForSecondNum = false;
             displayValue = "0.";
-        } else {
+        } else if (displayValue.length < 7) {
             displayValue += ".";
         }
         updateDisplay();
