@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setUpClear();
     setUpOperatorButtons();
     setUpEvalButton();
+    setUpDecimalButton();
   });
 
 
@@ -105,6 +106,10 @@ function setUpEvalButton() {
     document.querySelector("#btn-eval").addEventListener("click", () => evaluate());
 }
 
+function setUpDecimalButton() {
+    document.querySelector("#btn-decimal").addEventListener("click", () => handleDecimal());
+}
+
 
 function evaluate() {
     if (firstNum !== "" && operator !== "") {
@@ -137,4 +142,18 @@ function operatorButtonClicked(event) {
     operator = newOperator;
     firstNum = Number(displayValue);
     waitingForSecondNum = true;
+}
+
+function handleDecimal() {
+    if (!displayValue.includes(".")) {
+        if (displayValue === "0" || display.textContent === "NaN" || displayingResult || waitingForSecondNum) {
+            displayingResult = false;
+            waitingForSecondNum = false;
+            displayValue = "0.";
+        } else {
+            displayValue += ".";
+        }
+        updateDisplay();
+    }
+
 }
