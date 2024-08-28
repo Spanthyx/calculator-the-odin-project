@@ -95,19 +95,19 @@ function setUpClear() {
 
 function setUpOperatorButtons() {
     document.querySelector("#btn-divide")
-            .addEventListener("click", operatorButtonClicked(e));
+            .addEventListener("click", e => operatorButtonClicked(e));
     document.querySelector("#btn-multiply")
-            .addEventListener("click", operatorButtonClicked(e));
+            .addEventListener("click", e => operatorButtonClicked(e));
     document.querySelector("#btn-subtract")
-            .addEventListener("click", operatorButtonClicked(e));
+            .addEventListener("click", e => operatorButtonClicked(e));
     document.querySelector("#btn-add")
-            .addEventListener("click", operatorButtonClicked(e));
+            .addEventListener("click", e => operatorButtonClicked(e));
 }
 
 
 function operatorButtonClicked(event) {
     operator = event.target.textContent;
-    firstNum = displayValue;
+    firstNum = Number(displayValue);
     displayValue = "0";
 }
 
