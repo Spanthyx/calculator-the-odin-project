@@ -6,6 +6,7 @@ let secondNum;
 
 let displayValue;
 let display = document.querySelector("#display");
+let displayingResult;
 
 
 // Setup
@@ -63,25 +64,13 @@ function operate(firstNum, secondNum, operator) {
     return result;
 }
 
-function setUpNumberButtons() {
-    for (let i = 0; i <= 9; i++) {
-        document.querySelector(`#btn-${i}`)
-                .addEventListener("click", () => {
-                    if (displayValue === "0" || display.textContent === "NaN") {
-                        displayValue = `${i}`;
-                    } else {
-                        displayValue += `${i}`;
-                    }
-                    updateDisplay();
-                });
-    }
-}
-
 function resetAll() {
     firstNum = "";
     secondNum = "";
     operator = "";
     displayValue = "0";
+    displayingResult = false;
+    waitingForSecondNum = false;
     updateDisplay();
 }
 
@@ -89,11 +78,16 @@ function updateDisplay() {
     display.textContent = displayValue;
 }
 
+function setUpNumberButtons() {
+    for (let i = 0; i <= 9; i++) {
+        document.querySelector(`#btn-${i}`)
+                .addEventListener("click", (i) => numberButtonClicked(i));
+    }
+}
+
 function setUpClear() {
     document.querySelector("#c")
-            .addEventListener("click", () => {
-                resetAll();
-            });
+            .addEventListener("click", () => resetAll());
 }
 
 function setUpOperatorButtons() {
@@ -107,18 +101,8 @@ function setUpOperatorButtons() {
             .addEventListener("click", e => operatorButtonClicked(e));
 }
 
-
-function operatorButtonClicked(event) {
-    evaluate();
-    operator = event.target.textContent;
-    firstNum = Number(displayValue);
-    displayValue = "0";
-}
-
-
 function setUpEvalButton() {
-    const evalButton = document.querySelector("#btn-eval");
-    evalButton.addEventListener("click", () => evaluate());
+    document.querySelector("#btn-eval").addEventListener("click", () => evaluate());
 }
 
 
@@ -128,5 +112,29 @@ function evaluate() {
         displayValue = operate(firstNum, secondNum, operator);
         updateDisplay();
         operator = "";
+        firstNum = displayValue;
+        displayingResult = true;
     }
+}
+
+function numberButtonClicked(e) {
+    let num = e.target.textContent;
+    if (displayValue === "0" || display.textContent === "NaN" || displayingResult || waitingForSecondNum) {
+        displayingResult = false;
+        waitingForSecondNum = false;
+        displayValue = `${num}`;
+    } else {
+        displayValue += `${num}`;
+    }
+    updateDisplay();
+}
+
+function operatorButtonClicked(event) {
+    let newOperator = event.target.textContent;
+    if (firstNum !== "" && operator !== "" && !waitingForSecondNum) {
+        evaluate();
+    }
+    operator = newOperator;
+    firstNum = Number(displayValue);
+    waitingForSecondNum = true;
 }
