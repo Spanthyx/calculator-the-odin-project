@@ -1,3 +1,5 @@
+// TODO : Make names consistent
+
 // Variables
 
 let firstNum;
@@ -49,7 +51,7 @@ function operate(firstNum, secondNum, operator) {
         case "-":
             result = subtract(firstNum, secondNum);
             break;
-        case "x":
+        case "X":
             result = multiply(firstNum, secondNum);
             break;
         case "/":
