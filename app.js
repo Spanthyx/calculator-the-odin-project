@@ -13,6 +13,7 @@ let display = document.querySelector("#display");
 resetAll();
 setUpNumberButtons();
 setUpClear();
+setUpOperatorButtons();
 
 
 
@@ -47,11 +48,16 @@ function operate(firstNum, secondNum, operator) {
             result = multiply(firstNum, secondNum);
             break;
         case "/":
-            result = multiply(firstNum, secondNum);
+            if (secondNum === 0) {
+                result = NaN;
+            } else {
+                result = divide(firstNum, secondNum);
+            }
             break;
         default:
             result = null;
     }
+    return result;
 }
 
 function setUpNumberButtons() {
@@ -85,5 +91,23 @@ function setUpClear() {
             .addEventListener("click", () => {
                 resetAll();
             });
+}
+
+function setUpOperatorButtons() {
+    document.querySelector("#btn-divide")
+            .addEventListener("click", operatorButtonClicked(e));
+    document.querySelector("#btn-multiply")
+            .addEventListener("click", operatorButtonClicked(e));
+    document.querySelector("#btn-subtract")
+            .addEventListener("click", operatorButtonClicked(e));
+    document.querySelector("#btn-add")
+            .addEventListener("click", operatorButtonClicked(e));
+}
+
+
+function operatorButtonClicked(event) {
+    operator = event.target.textContent;
+    firstNum = displayValue;
+    displayValue = "0";
 }
 
