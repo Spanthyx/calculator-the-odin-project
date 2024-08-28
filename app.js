@@ -10,10 +10,13 @@ let display = document.querySelector("#display");
 
 // Setup
 
-resetAll();
-setUpNumberButtons();
-setUpClear();
-setUpOperatorButtons();
+document.addEventListener("DOMContentLoaded", () => {
+    resetAll();
+    setUpNumberButtons();
+    setUpClear();
+    setUpOperatorButtons();
+    setUpEvalButton();
+  });
 
 
 
@@ -64,7 +67,7 @@ function setUpNumberButtons() {
     for (let i = 0; i <= 9; i++) {
         document.querySelector(`#btn-${i}`)
                 .addEventListener("click", () => {
-                    if (displayValue === "0") {
+                    if (displayValue === "0" || display.textContent === "NaN") {
                         displayValue = `${i}`;
                     } else {
                         displayValue += `${i}`;
@@ -106,8 +109,24 @@ function setUpOperatorButtons() {
 
 
 function operatorButtonClicked(event) {
+    evaluate();
     operator = event.target.textContent;
     firstNum = Number(displayValue);
     displayValue = "0";
 }
 
+
+function setUpEvalButton() {
+    const evalButton = document.querySelector("#btn-eval");
+    evalButton.addEventListener("click", () => evaluate());
+}
+
+
+function evaluate() {
+    if (firstNum !== "" && operator !== "") {
+        secondNum = Number(displayValue);
+        displayValue = operate(firstNum, secondNum, operator);
+        updateDisplay();
+        operator = "";
+    }
+}
