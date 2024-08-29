@@ -1,6 +1,3 @@
-// TODO : Make names consistent
-// TODO : Watch output, so it isn't too big
-
 // Variables
 
 let firstNum;
@@ -14,12 +11,13 @@ let displayingResult;
 let operatorButtonsList = Array.from(document.querySelectorAll(".btn-operator"));
 
 
+
 // Setup
 
 document.addEventListener("DOMContentLoaded", () => {
     resetAll();
     setUpNumberButtons();
-    setUpClear();
+    setUpClearButtonButton();
     setUpOperatorButtons();
     setUpEvalButton();
     setUpDecimalButton();
@@ -29,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// Functions
+// Calculator Functions
 
 function add(a, b) {
     return a + b;
@@ -87,99 +85,53 @@ function updateDisplay() {
     display.textContent = displayValue;
 }
 
+
+
+// Event Listener Setup Functions
+
 function setUpNumberButtons() {
     for (let i = 0; i <= 9; i++) {
-        document.querySelector(`#btn-${i}`)
-                .addEventListener("click", (i) => numberButtonClicked(i.target.textContent));
-        document.querySelector(`#btn-${i}`)
-                .addEventListener("mousedown", e => {
-                    e.target.style.opacity = 0.5; 
-                });
-        document.querySelector(`#btn-${i}`)
-                .addEventListener("mouseup", e => {
-                    e.target.style.opacity = 1; 
-                });
-        document.querySelector(`#btn-${i}`)
-                .addEventListener("mouseleave", e => {
-                    e.target.style.opacity = 1; 
-                });
+        document.querySelector(`#btn-${i}`).addEventListener("click", (i) => numberButtonClicked(i.target.textContent));
+        document.querySelector(`#btn-${i}`).addEventListener("mousedown", e => e.target.style.opacity = 0.5);
+        document.querySelector(`#btn-${i}`).addEventListener("mouseup", e => e.target.style.opacity = 1);
+        document.querySelector(`#btn-${i}`).addEventListener("mouseleave", e => e.target.style.opacity = 1);
     }
 }
 
-function setUpClear() {
-    document.querySelector(`#btn-c`)
-            .addEventListener("click", () => resetAll());
-    document.querySelector(`#btn-c`)
-            .addEventListener("mousedown", e => {
-                e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
-            });
-    document.querySelector(`#btn-c`)
-            .addEventListener("mouseup", e => {
-                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
-            });
-    document.querySelector(`#btn-c`)
-            .addEventListener("mouseleave", e => {
-                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
-            });
+function setUpClearButton() {
+    document.querySelector(`#btn-c`).addEventListener("click", () => resetAll());
+    document.querySelector(`#btn-c`).addEventListener("mousedown", e => e.target.style.backgroundColor = `rgb(0, 255, 255)`);
+    document.querySelector(`#btn-c`).addEventListener("mouseup", e => e.target.style.backgroundColor = `rgb(255, 115, 0)`);
+    document.querySelector(`#btn-c`).addEventListener("mouseleave", e => e.target.style.backgroundColor = `rgb(255, 115, 0)`);
 }
 
 function setUpOperatorButtons() {
     operatorButtonsList.forEach((btn) => {
         btn.style.backgroundColor = `rgb(0, 255, 255)`;
         btn.addEventListener("click", e => operatorButtonClicked(e.target.textContent.toLowerCase()));
-        btn.addEventListener("mousedown", e => {
-            e.target.style.backgroundColor = `rgb(255, 115, 0)`; 
-        });
+        btn.addEventListener("mousedown", e => e.target.style.backgroundColor = `rgb(255, 115, 0)`);
     })
 }
 
 function setUpEvalButton() {
     document.querySelector(`#btn-eval`).addEventListener("click", () => evaluate());
-    document.querySelector(`#btn-eval`)
-            .addEventListener("mousedown", e => {
-                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
-            });
-    document.querySelector(`#btn-eval`)
-            .addEventListener("mouseup", e => {
-                e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
-            });
-    document.querySelector(`#btn-eval`)
-            .addEventListener("mouseleave", e => {
-                e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
-            });
+    document.querySelector(`#btn-eval`).addEventListener("mousedown", e => e.target.style.backgroundColor = `rgb(255, 115, 0)`);
+    document.querySelector(`#btn-eval`).addEventListener("mouseup", e => e.target.style.backgroundColor = `rgb(0, 255, 255)`);
+    document.querySelector(`#btn-eval`).addEventListener("mouseleave", e => e.target.style.backgroundColor = `rgb(0, 255, 255)`);
 }
 
 function setUpDecimalButton() {
-    document.querySelector("#btn-decimal").addEventListener("click", () => handleDecimal());
-    document.querySelector(`#btn-decimal`)
-            .addEventListener("mousedown", e => {
-                e.target.style.opacity = 0.5; 
-            });
-    document.querySelector(`#btn-decimal`)
-            .addEventListener("mouseup", e => {
-                e.target.style.opacity = 1; 
-            });
-    document.querySelector(`#btn-decimal`)
-            .addEventListener("mouseleave", e => {
-                e.target.style.opacity = 1; 
-            });
+    document.querySelector("#btn-decimal").addEventListener("click", () => decimalButtonClicked());
+    document.querySelector(`#btn-decimal`).addEventListener("mousedown", e => e.target.style.opacity = 0.5);
+    document.querySelector(`#btn-decimal`).addEventListener("mouseup", e => e.target.style.opacity = 1);
+    document.querySelector(`#btn-decimal`).addEventListener("mouseleave", e => e.target.style.opacity = 1);
 }
 
 function setUpDeleteButton() {
-    document.querySelector("#btn-del")
-            .addEventListener("click", () => delButtonClicked());
-    document.querySelector(`#btn-del`)
-            .addEventListener("mousedown", e => {
-                e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
-            });
-    document.querySelector(`#btn-del`)
-            .addEventListener("mouseup", e => {
-                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
-            });
-    document.querySelector(`#btn-del`)
-            .addEventListener("mouseleave", e => {
-                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
-            });
+    document.querySelector("#btn-del").addEventListener("click", () => delButtonClicked());
+    document.querySelector(`#btn-del`).addEventListener("mousedown", e => e.target.style.backgroundColor = `rgb(0, 255, 255)`);
+    document.querySelector(`#btn-del`).addEventListener("mouseup", e => e.target.style.backgroundColor = `rgb(255, 115, 0)`);
+    document.querySelector(`#btn-del`).addEventListener("mouseleave", e => e.target.style.backgroundColor = `rgb(255, 115, 0)`);
 }
 
 
@@ -206,7 +158,7 @@ function setUpKeyBoardSupport() {
                 operatorButtonClicked(key);
                 break;
             case '.':
-                handleDecimal();
+                decimalButtonClicked();
                 break;
             case 'Backspace':
                 delButtonClicked();
@@ -220,6 +172,10 @@ function setUpKeyBoardSupport() {
         }
     });
 }
+
+
+
+// Logic functions
 
 function evaluate() {
     if (firstNum !== "" && operator !== "") {
@@ -260,7 +216,7 @@ function operatorButtonClicked(newOperator) {
     waitingForSecondNum = true;
 }
 
-function handleDecimal() {
+function decimalButtonClicked() {
     if (!displayValue.includes(".")) {
         if (displayValue === "0" || display.textContent === "NaN" || displayingResult || waitingForSecondNum || display.textContent === "2 Big!") {
             displayingResult = false;
@@ -283,6 +239,10 @@ function delButtonClicked() {
         updateDisplay();
     }
 }
+
+
+
+// Helper functions
 
 function keepLengthLESeven(result) {
     if (isNaN(result)) {
