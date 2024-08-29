@@ -61,7 +61,8 @@ button {
 
 .btn-digit,
 .btn-operator,
-#btn-eval {
+#btn-eval,
+#btn-del {
     width: 90px;
     border-radius: 50%;
 }
@@ -75,7 +76,10 @@ button {
     background-color: rgb(255, 115, 0);
     flex: 1;
     border-radius: 40px;
-    width: 294px;
+}
+
+#btn-c {
+    width: 192px;
 }
 
 .btn-operator,

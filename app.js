@@ -1,4 +1,5 @@
 // TODO : Make names consistent
+// TODO : Watch output, so it isn't too big
 
 // Variables
 
@@ -22,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setUpOperatorButtons();
     setUpEvalButton();
     setUpDecimalButton();
+    setUpDeleteButton();
+    setUpKeyBoardSupport();
   });
 
 
@@ -104,17 +107,17 @@ function setUpNumberButtons() {
 }
 
 function setUpClear() {
-    document.querySelector("#c")
+    document.querySelector(`#btn-c`)
             .addEventListener("click", () => resetAll());
-    document.querySelector(`#c`)
+    document.querySelector(`#btn-c`)
             .addEventListener("mousedown", e => {
                 e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
             });
-    document.querySelector(`#c`)
+    document.querySelector(`#btn-c`)
             .addEventListener("mouseup", e => {
                 e.target.style.backgroundColor = `rgb(255, 115, 0)`;
             });
-    document.querySelector(`#c`)
+    document.querySelector(`#btn-c`)
             .addEventListener("mouseleave", e => {
                 e.target.style.backgroundColor = `rgb(255, 115, 0)`;
             });
@@ -160,6 +163,28 @@ function setUpDecimalButton() {
             .addEventListener("mouseleave", e => {
                 e.target.style.opacity = 1; 
             });
+}
+
+function setUpDeleteButton() {
+    document.querySelector("#btn-del")
+            .addEventListener("click", () => delButtonClicked());
+    document.querySelector(`#btn-del`)
+            .addEventListener("mousedown", e => {
+                e.target.style.backgroundColor = `rgb(0, 255, 255)`; 
+            });
+    document.querySelector(`#btn-del`)
+            .addEventListener("mouseup", e => {
+                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
+            });
+    document.querySelector(`#btn-del`)
+            .addEventListener("mouseleave", e => {
+                e.target.style.backgroundColor = `rgb(255, 115, 0)`;
+            });
+}
+
+
+function setUpKeyBoardSupport() {
+    
 }
 
 function evaluate() {
@@ -214,5 +239,15 @@ function handleDecimal() {
         }
         updateDisplay();
     }
+}
 
+function delButtonClicked() {
+    if (!(displayingResult || operator !== "" && waitingForSecondNum)) {
+        if (displayValue.length === 1) {
+            displayValue = "0";
+        } else if (displayValue.length > 1) {
+            displayValue = displayValue.slice(0, displayValue.length - 1);
+        }
+        updateDisplay();
+    }
 }
