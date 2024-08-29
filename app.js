@@ -17,7 +17,7 @@ let operatorButtonsList = Array.from(document.querySelectorAll(".btn-operator"))
 document.addEventListener("DOMContentLoaded", () => {
     resetAll();
     setUpNumberButtons();
-    setUpClearButtonButton();
+    setUpClearButton();
     setUpOperatorButtons();
     setUpEvalButton();
     setUpDecimalButton();
@@ -262,7 +262,7 @@ function keepLengthLESeven(result) {
         if (splitOnDecimalPoint.length > 1) {
             let countOfDecimals = 7 - splitOnDecimalPoint[0].length - 1;
             newResult = Number(splitOnDecimalPoint.join("."));
-            return newResult.toFixed(countOfDecimals);
+            return Number(newResult.toFixed(countOfDecimals)).toString();
         }
     }
 }
