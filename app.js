@@ -56,7 +56,7 @@ function operate(firstNum, secondNum, operator) {
         case "-":
             result = subtract(firstNum, secondNum);
             break;
-        case "X":
+        case "x":
             result = multiply(firstNum, secondNum);
             break;
         case "/":
@@ -90,7 +90,7 @@ function updateDisplay() {
 function setUpNumberButtons() {
     for (let i = 0; i <= 9; i++) {
         document.querySelector(`#btn-${i}`)
-                .addEventListener("click", (i) => numberButtonClicked(i));
+                .addEventListener("click", (i) => numberButtonClicked(i.target.textContent));
         document.querySelector(`#btn-${i}`)
                 .addEventListener("mousedown", e => {
                     e.target.style.opacity = 0.5; 
@@ -126,7 +126,7 @@ function setUpClear() {
 function setUpOperatorButtons() {
     operatorButtonsList.forEach((btn) => {
         btn.style.backgroundColor = `rgb(0, 255, 255)`;
-        btn.addEventListener("click", e => operatorButtonClicked(e));
+        btn.addEventListener("click", e => operatorButtonClicked(e.target.textContent.toLowerCase()));
         btn.addEventListener("mousedown", e => {
             e.target.style.backgroundColor = `rgb(255, 115, 0)`; 
         });
@@ -184,14 +184,48 @@ function setUpDeleteButton() {
 
 
 function setUpKeyBoardSupport() {
-    
+    document.addEventListener("keydown", e => {
+        let key = e.key;
+        switch(key) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                numberButtonClicked(key);
+                break;
+            case '+':
+            case '-':
+            case '/':
+            case 'x':
+                operatorButtonClicked(key);
+                break;
+            case '.':
+                handleDecimal();
+                break;
+            case 'Backspace':
+                delButtonClicked();
+                break;
+            case 'e':
+                evaluate();
+                break;
+            case 'c':
+                resetAll();
+                break
+        }
+    });
 }
 
 function evaluate() {
     if (firstNum !== "" && operator !== "") {
         setUpOperatorButtons();
         secondNum = Number(displayValue);
-        displayValue = operate(firstNum, secondNum, operator);
+        displayValue = keepLengthLESeven(operate(firstNum, secondNum, operator));
         updateDisplay();
         operator = "";
         firstNum = displayValue;
@@ -199,9 +233,8 @@ function evaluate() {
     }
 }
 
-function numberButtonClicked(e) {
-    let num = e.target.textContent;
-    if (displayValue === "0" || display.textContent === "NaN" || displayingResult || waitingForSecondNum) {
+function numberButtonClicked(num) {
+    if (displayValue === "0" || display.textContent === "NaN" || displayingResult || waitingForSecondNum || display.textContent === "2 Big!") {
         displayingResult = false;
         waitingForSecondNum = false;
         displayValue = `${num}`;
@@ -211,13 +244,12 @@ function numberButtonClicked(e) {
     updateDisplay();
 }
 
-function operatorButtonClicked(event) {
-    let newOperator = event.target.textContent;
+function operatorButtonClicked(newOperator) {
     if (firstNum !== "" && operator !== "" && !waitingForSecondNum) {
         evaluate();
     }
     operatorButtonsList.forEach((btn) => {
-        if (btn.textContent === newOperator) {
+        if (btn.textContent.toLowerCase() === newOperator) {
             btn.style.backgroundColor = `rgb(255, 115, 0)`;
         } else {
             btn.style.backgroundColor = `rgb(0, 255, 255)`; 
@@ -230,7 +262,7 @@ function operatorButtonClicked(event) {
 
 function handleDecimal() {
     if (!displayValue.includes(".")) {
-        if (displayValue === "0" || display.textContent === "NaN" || displayingResult || waitingForSecondNum) {
+        if (displayValue === "0" || display.textContent === "NaN" || displayingResult || waitingForSecondNum || display.textContent === "2 Big!") {
             displayingResult = false;
             waitingForSecondNum = false;
             displayValue = "0.";
@@ -249,5 +281,28 @@ function delButtonClicked() {
             displayValue = displayValue.slice(0, displayValue.length - 1);
         }
         updateDisplay();
+    }
+}
+
+function keepLengthLESeven(result) {
+    if (isNaN(result)) {
+        return result;
+    }
+
+    result = String(result);
+    if (result.length <= 7) {
+        return result;
+    }
+
+    let splitOnDecimalPoint = result.split(".");
+    let newResult = "";
+    if (splitOnDecimalPoint[0].length > 7) {
+        return "2 Big!";
+    } else {
+        if (splitOnDecimalPoint.length > 1) {
+            let countOfDecimals = 7 - splitOnDecimalPoint[0].length - 1;
+            newResult = Number(splitOnDecimalPoint.join("."));
+            return newResult.toFixed(countOfDecimals);
+        }
     }
 }
